@@ -1,0 +1,82 @@
+- AUTH SERVICE ----> DONE
+    - login 
+    - register
+    - logout 
+    - create users
+    - create roles
+    - tokens
+
+- SUBSCRIPTION SERVICE
+    - new subscriptionPlan
+    - new subscription
+    - new memberSubscription
+    - abandon memberSubscription
+    - renew memberSubscription
+    - get subscriptionPlans
+    - get subscriptionPlan
+    - get memberSubscription
+
+- PAYMENT SERVICE
+    - create order
+    - add payment 
+    - remove payment
+    - get all payments 
+
+
+- DISCOUNTS SERVICE
+    - create discount
+    - update discount 
+    - delete discount 
+    - get discount
+    - is discount valid
+
+
+- STREAMING/DOWNLOAD SERVICE
+    - stream video 
+    - user is watching now 
+    - user downloaded video
+    - most downloaded
+    - most watched
+    - top watching now list of
+
+- CMS SERVICE
+    - statics 
+    - analytics
+    - user's management 
+    - categories
+
+- REPORTS SERVICE
+    - add request
+    - remove request 
+    - update request
+    - get requests
+    - get request
+
+- REQUESTS SERVICE
+    - add report
+    - remove report
+    - update report
+    - get reports
+    - get report
+
+- SERIES SERVICE
+    - new serie 
+    - new season 
+    - new episode
+    - delete episode
+    - delete all season episodes
+    - delete season
+    - delete all serie seasons 
+    - delete serie 
+    
+- MOVIES SERVICE
+    - new movie
+    - update movie
+    - delete movie
+    - delete list of movies
+
+
+- UPLOADS SERVICE
+    - upload attachement
+    - delete attachement
+    - get attachement
