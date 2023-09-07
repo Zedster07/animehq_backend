@@ -49,7 +49,7 @@ module.exports = {
         docker: {
             username: 'root',
             password: 'Biskra@07',
-            database: 'algdoc_auth',
+            database: 'animehq_express',
             host: 'db', 
         }
     },

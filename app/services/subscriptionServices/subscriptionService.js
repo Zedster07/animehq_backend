@@ -30,6 +30,10 @@ class SubscriptionsService {
     static async getPlan(planId) {
         return await SubscriptionPlan.findOne({where:{id:planId}});
     }
+
+    static async getPlanByName(name) {
+        return await SubscriptionPlan.findOne({where:{name}});
+    }
 }
 
 module.exports = SubscriptionsService;

@@ -87,6 +87,14 @@ class MemberSubscriptionService {
         return await this.checkExpiration(subscription.id) ;
     }
 
+
+    static async getSubscriptionById(id) {
+        const subscription = await MemberSubscription.findOne({
+            where: {id}
+        });
+        return subscription;
+    }
+
     static async getMySubscription(user_id) {
         const subscription = await MemberSubscription.findOne({
             where: {
@@ -96,7 +104,6 @@ class MemberSubscriptionService {
         });
 
         return subscription;
-        // return await this.checkExpiration(subscription.id) ;
     }
 }
 

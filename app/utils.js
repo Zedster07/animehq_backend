@@ -1,6 +1,8 @@
 const { hasRole } = require("./config/database");
+const RoleService = require("./services/auth-service/roleServices");
 const UserService = require("./services/auth-service/userServices");
 const CouponService = require("./services/coupon-service/CouponService");
+const SubscriptionsService = require("./services/subscriptionServices/subscriptionService");
 
 const getDevice = (userAgentString) => {
     console.log(userAgentString);
@@ -10,15 +12,6 @@ const getDevice = (userAgentString) => {
     return deviceInfo;
 }
 
-
-
-const calculateTotalPrice = async ( plan , duration , coupon) => {
-    let price = plan.price * duration;
-    if(coupon) {
-        price = await CouponService.applyCoupon(plan ,coupon);
-    }
-    return price;
-}
 
 const getExpirationDate = (start_date, duration) => {
   // Parse the start_date to a Date object
@@ -35,7 +28,18 @@ const getExpirationDate = (start_date, duration) => {
 
 
 const initial_data = async () => {
-    const check = await UserService.getUserByName('Admin');
+
+
+
+    let check = await RoleService.getRoleByName('Admin');
+    if(!check) {
+        await RoleService.new("Admin");
+        await RoleService.new("User");
+        await RoleService.new("Subscriber");
+    }
+
+    
+    check = await UserService.getUserByName('Admin');
     if(!check) {
         await UserService.createUser({
             username: 'Admin',
@@ -44,6 +48,14 @@ const initial_data = async () => {
         });
         const user = await UserService.getUserByName('Admin');
         await hasRole.create({UserId: user.id, RoleId: 1});
+    }
+
+    // create plans 
+    check = await SubscriptionsService.getPlanByName('Sama');
+    if(!check) {
+        await SubscriptionsService.newPlan('Senpai',false, 1,2.99,null);
+        await SubscriptionsService.newPlan('Sensei',false, 2,7.99,null);
+        await SubscriptionsService.newPlan('Sama',false, 3,19.99,null);
     }
     
 }
@@ -83,4 +95,4 @@ const validateInput = (obj, item,body = null ,) => {
 }
 
 
-module.exports = {getDevice,validateInput ,getExpirationDate , calculateTotalPrice , initial_data};
+module.exports = {getDevice,validateInput ,getExpirationDate  , initial_data};
