@@ -72,7 +72,7 @@ router.get('/deleteAccount', authMiddleware , UserController.deleteAccount);
 
 
 
-
+router.get('/profile', authMiddleware,  UserController.getUserProfile);
 
 
 

@@ -10,6 +10,8 @@ const userRoutes = require('./routes/auth-routes/userRoutes');
 const roleRoutes = require('./routes/auth-routes/roleRoutes');
 const metaRoutes = require('./routes/auth-routes/metaRoutes');
 
+// video stream and download routes
+const videoRoutes = require('./routes/video-routes/videoRoutes');
 
 
 
@@ -18,6 +20,9 @@ const metaRoutes = require('./routes/auth-routes/metaRoutes');
 
 // APP Dependencies
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
+const session = require('express-session');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const {sequelize} = require('./config/database');
@@ -25,6 +30,14 @@ const swaggerDocument = require('./swagger-output.json');
 const useragent = require('express-useragent');
 const app = express();
 const config = require('./config/config');
+app.use(session({
+    secret: 'BRdyHxc79lblLXe6PIj1OBxX2Y3ojWva',
+    resave: false,
+    saveUninitialized: true,
+}));
+
+
+
 /////////////////////////////
 
 
@@ -33,6 +46,13 @@ app.use(useragent.express());
 app.use(bodyParser.json());
 const retry = require('retry');
 const { initial_data } = require('./utils');
+
+
+const cors = require("cors");
+let corsOptions = {
+  origin: ["*"],
+};
+app.use(cors(corsOptions));
 
 const operation = retry.operation({
   retries: 5, // Number of retry attempts
@@ -89,12 +109,53 @@ app.use(roleRoutes);
 // Meta Routes
 app.use(metaRoutes);
 
-
-
+app.use(videoRoutes);
 
 
 const port = config.port || 3000;
 
-app.listen(port, () => {
-  console.log(`Microservice listening at http://localhost:${port}`);
-});
+
+
+
+
+
+// https.createServer(options,app).listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
+
+
+const runServer = () => {
+  try{
+    const options = {
+      key: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com-0001/privkey.pem'), // Path to the private key file
+      cert: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com-0001/cert.pem'), // Path to the certificate file
+    };
+    const server = https.createServer(options, app);
+    if(server) {
+      server.on('error', (err) => {
+        console.error(`Error starting HTTPS server: ${err}`);
+        console.log(`Falling back to HTTP server on port ${port}`);
+        app.listen(port, () => {
+          console.log(`Microservice listening at http://localhost:${port}`);
+        });
+      });
+
+      server.listen(port, () => {
+        console.log(`Server is running on port ${port} with a certificate`);
+      });
+    } else {
+      app.listen(port, () => {
+        console.log(`Microservice listening at http://localhost:${port}`);
+      });
+    }
+  } catch(err) {
+    app.listen(port, () => {
+        console.log(`Microservice listening at http://localhost:${port}`);
+      });
+  }
+  
+  
+};
+
+runServer();
+

@@ -9,7 +9,7 @@ async function authMiddleware(req ,res , next) {
 
   if (!token) {
     
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(403).json({ error: 'Unauthorized' });
   }
 
   let decodedToken = {};
@@ -47,7 +47,7 @@ async function authMiddleware(req ,res , next) {
 
     if(decodedToken == false) {
 
-      res.status(401).json({ error: 'Invalid token' });
+      res.status(403).json({ error: 'Invalid token' });
 
     } else {
 
@@ -66,13 +66,13 @@ async function authMiddleware(req ,res , next) {
         req.session = decodedToken.session;
         next();
       } else {
-        res.status(401).json({ error: 'Invalid token' });
+        res.status(403).json({ error: 'Invalid token' });
       }
 
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({ error: 'Invalid token' });
+    res.status(403).json({ error: 'Invalid token' });
   }
 }
 

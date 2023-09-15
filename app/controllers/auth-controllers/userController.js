@@ -30,7 +30,7 @@ class UserController {
     const { username, email, password } = req.body;
     try {
       let result = await UserService.createUser({username, email, password });
-      res.status(201).json(result);
+      res.status(200).json(result);
     } catch (error) {
       switch (error.message) {
         case 'emailExists':
@@ -80,7 +80,11 @@ class UserController {
         }
         
         let result = await UserService.loginUser(user.id, {ip:req.ip , device : utils.getDevice(req.useragent.source)});
-        res.status(200).json(result);
+        res.cookie("fdm", result.refresh, {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+        res.status(200).json({token: result.token, user});
       }
       
 
@@ -481,9 +485,34 @@ class UserController {
     }] */
     try{
       const tokens = await UserService.refreshToken(req.user.id, req.session); 
+
+      res.cookie("fdm", tokens.refresh, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
       res.status(200).json(tokens);
     } catch(error) {
       res.status(500).json("Something Wrong happened");
+    }
+  }
+
+
+
+  static async getUserProfile(req, res) {
+
+      try {
+      let id = req.user.id;
+
+      const result = await UserService.getUserById(id);
+      if(result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({error: 'User not found'});
+      }
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'An error occurred' });
     }
   }
 

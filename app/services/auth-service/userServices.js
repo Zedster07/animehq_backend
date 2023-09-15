@@ -127,23 +127,21 @@ class UserService {
     
     
     /**
-   * Update a user's profile information.
-   * @function
-   * @async
-   * @param {object} payload - Updated user profile data.
-   * @param {number} id - User ID.
-   */
-  static async updateProfile(payload, id) {
-    const check = await this.getUserById(id);
-    if (!check) {
-      throw new Error('userNotFound');
-    } else {
-      await User.update(payload, { where: { id } });
+     * Update a user's profile information.
+     * @function
+     * @async
+     * @param {object} payload - Updated user profile data.
+     * @param {number} id - User ID.
+     */
+    static async updateProfile(payload, id) {
+        const check = await this.getUserById(id);
+        if (!check) {
+        throw new Error('userNotFound');
+        } else {
+        await User.update(payload, { where: { id } });
+        }
     }
-  }
 
-
-    
     
     
     /**
@@ -156,8 +154,6 @@ class UserService {
         return await User.findOne({ where: { username } })
     }
 
-    
-    
 
 
     /**

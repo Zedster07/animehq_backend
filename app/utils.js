@@ -95,4 +95,17 @@ const validateInput = (obj, item,body = null ,) => {
 }
 
 
-module.exports = {getDevice,validateInput ,getExpirationDate  , initial_data};
+function customDecrypt(encryptedLink) {
+  const key = "125812d5a33b9b1e78871c14e3c52579";
+  // Replace '_' with '/' and '-' with '+' to revert the custom encoding
+  const customBase64 = encryptedLink.replace(/_/g, '/').replace(/-/g, '+');
+  const data = Buffer.from(customBase64, 'base64');
+  let decrypted = '';
+  for (let i = 0; i < data.length; i++) {
+    decrypted += String.fromCharCode(data[i] ^ key.charCodeAt(i % key.length));
+  }
+  return decrypted;
+}
+
+
+module.exports = {getDevice,validateInput ,getExpirationDate  , initial_data , customDecrypt};

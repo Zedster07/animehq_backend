@@ -277,11 +277,6 @@ const validator = {
                 checkRegex: true,
                 type: dataTypes.string,
             },
-            {
-                name: "profilePicture",
-                checkRegex: true,
-                type: dataTypes.url,
-            },
         ]
     }
   },
