@@ -41,8 +41,8 @@ module.exports = {
     hosting: 'local', // local or docker
     db_setups: {
         local: {
-            username: 'root',
-            password: '',
+            username: 'animehq_user',
+            password: 'AnimeHq@123456',
             database: 'animehq_express',
             host: 'localhost', 
         },
