@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { customDecrypt } = require('../../utils');
-
+const config = require('../../config/config');
 
 class VideoController {
     static async streamFile(req, res) {
@@ -19,7 +19,7 @@ class VideoController {
         if (!range) {
             res.status(400).send("UNAUTHORIZED");
         } else {
-            const videoPath = path.join(__dirname, pp);
+            const videoPath = path.join(config.serverPath, pp);
             console.log(videoPath);
             if( 
                 (req.useragent.isMobile && ( req.useragent.isiPhone || req.useragent.isiPhoneNative)) ||
@@ -62,7 +62,7 @@ class VideoController {
         var parts = pp.split('/');
         var filename = parts[parts.length - 1];
             
-        const videoPath = path.join(__dirname, pp);
+        const videoPath = path.join(config.serverPath, pp);
 
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');

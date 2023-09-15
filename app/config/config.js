@@ -1,4 +1,5 @@
 module.exports = {
+    serverPath: '/home/webserver/html/',
     development: {
         dialect: 'mysql', // Specify your database dialect here
         // Other database connection settings
