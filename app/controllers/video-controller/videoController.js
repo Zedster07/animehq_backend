@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const { customDecrypt } = require('../../utils');
 
 
 class VideoController {
