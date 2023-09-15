@@ -2,13 +2,10 @@ const express = require('express');
 const authMiddleware = require('../../middlewares/authMiddleware');
 const router = express.Router();
 
-
-router.use(authMiddleware);
-
 const config = require('../../config/config');
 router.use(config.routes.meta.prefix , router);
 
-router.get('/user', (req , res) => {
+router.get('/user',authMiddleware, (req , res) => {
     // #swagger.tags = ['Meta']
     /* #swagger.security = [{
         "apiKeyAuth": []
@@ -16,7 +13,7 @@ router.get('/user', (req , res) => {
     res.status(200).json(req.user);
 });
 
-router.get('/check', (req , res) => {
+router.get('/check',authMiddleware, (req , res) => {
     // #swagger.tags = ['Meta']
     /* #swagger.security = [{
         "apiKeyAuth": []

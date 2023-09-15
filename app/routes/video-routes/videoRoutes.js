@@ -11,3 +11,4 @@ router.get('/stream/:dcpath',VideoController.streamFile);
 router.get('/download/:dcpath',VideoController.downloadFile);
 
 module.exports = router;
+
