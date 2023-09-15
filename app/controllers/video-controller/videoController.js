@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const session = require('express-session');
+
 
 class VideoController {
     static async streamFile(req, res) {

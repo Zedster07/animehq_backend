@@ -78,6 +78,7 @@ operation.attempt(currentAttempt => {
     })
     .catch(error => {
       console.error(`Error connecting to the database (Attempt ${currentAttempt}):`);
+      console.log(error);
       if (operation.retry(error)) {
         return;
       }
