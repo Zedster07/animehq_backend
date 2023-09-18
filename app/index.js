@@ -42,7 +42,7 @@ app.use(session({
 
 
 const downloadSpeedLimit = throttle({
-  rate: '50mbps',
+  rate: '6.25mb/s',
   burst: 100, // Optional burst rate, adjust as needed
   xff: true,  // Optional: Use X-Forwarded-For header to identify client IP
 });
