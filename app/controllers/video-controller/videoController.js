@@ -78,7 +78,7 @@ class VideoController {
 
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');
-        const throttledStream = createThrottledStream(videoPath, 50);
+        const throttledStream = this.createThrottledStream(videoPath, 50);
         throttledStream.pipe(res);
         throttledStream.on('error', (err) => {
             console.error(err);
