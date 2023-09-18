@@ -80,7 +80,7 @@ class VideoController {
         res.setHeader('Content-Type', 'application/octet-stream');
         
         // Create a throttled stream with the specified speed limit (50 Mbps)
-        const throttledStream = VideoController.createThrottledStream(videoPath, 10);
+        const throttledStream = VideoController.createThrottledStream(videoPath, 40);
     
         // Handle errors if necessary
         throttledStream.on('error', (err) => {
