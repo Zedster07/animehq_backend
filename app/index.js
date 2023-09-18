@@ -30,6 +30,10 @@ const swaggerDocument = require('./swagger-output.json');
 const useragent = require('express-useragent');
 const app = express();
 const config = require('./config/config');
+
+const throttle = require('express-throttle');
+
+
 app.use(session({
     secret: 'BRdyHxc79lblLXe6PIj1OBxX2Y3ojWva',
     resave: false,
@@ -37,11 +41,17 @@ app.use(session({
 }));
 
 
+const downloadSpeedLimit = throttle({
+  rate: '50mbps',
+  burst: 100, // Optional burst rate, adjust as needed
+  xff: true,  // Optional: Use X-Forwarded-For header to identify client IP
+});
+
 
 /////////////////////////////
 
 
-
+app.use(downloadSpeedLimit);
 app.use(useragent.express());
 app.use(bodyParser.json());
 const retry = require('retry');
