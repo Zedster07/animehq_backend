@@ -31,7 +31,6 @@ const useragent = require('express-useragent');
 const app = express();
 const config = require('./config/config');
 
-const throttle = require('express-throttle');
 
 
 app.use(session({
@@ -41,17 +40,10 @@ app.use(session({
 }));
 
 
-const downloadSpeedLimit = throttle({
-  rate: '6.25mb/s',
-  burst: 100, // Optional burst rate, adjust as needed
-  xff: true,  // Optional: Use X-Forwarded-For header to identify client IP
-});
 
 
 /////////////////////////////
 
-
-app.use(downloadSpeedLimit);
 app.use(useragent.express());
 app.use(bodyParser.json());
 const retry = require('retry');

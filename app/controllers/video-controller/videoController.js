@@ -2,8 +2,20 @@ const path = require('path');
 const fs = require('fs');
 const { customDecrypt } = require('../../utils');
 const config = require('../../config/config');
-
+const throttle = require('stream-throttle');
 class VideoController {
+
+
+    static createThrottledStream(filePath, speedLimitMbps) {
+        const readStream = fs.createReadStream(filePath);
+        const throttleStream = new throttle.Throttle({ rate: speedLimitMbps * 1024 * 1024 }); // Convert speed limit to bytes per second
+        
+        readStream.pipe(throttleStream);
+        
+        return throttleStream;
+    }
+
+
     static async streamFile(req, res) {
         let { dcpath } = req.params;
 
@@ -66,8 +78,13 @@ class VideoController {
 
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');
-
-        res.download(videoPath);
+        const throttledStream = createThrottledStream(videoPath, 50);
+        throttledStream.pipe(res);
+        throttledStream.on('error', (err) => {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        });
+        // res.download(videoPath);
     }
 }
 
