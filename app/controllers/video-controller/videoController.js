@@ -62,30 +62,37 @@ class VideoController {
         }
     }
 
-    static async downloadFile(req , res) {
+    static async downloadFile(req, res) {
         let { dcpath } = req.params;
-
+    
         let tmp = dcpath.split('.');
-
+    
         dcpath = tmp[0];
         console.log(dcpath);
         const pp = customDecrypt(dcpath);
-        console.log(pp);    
+        console.log(pp);
         var parts = pp.split('/');
         var filename = parts[parts.length - 1];
-            
+    
         const videoPath = path.join(config.serverPath, pp);
-
+    
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');
-        const throttledStream = this.createThrottledStream(videoPath, 50);
-        throttledStream.pipe(res);
+        
+        // Create a throttled stream with the specified speed limit (50 Mbps)
+        const throttledStream = VideoController.createThrottledStream(videoPath, 50);
+    
+        // Handle errors if necessary
         throttledStream.on('error', (err) => {
             console.error(err);
             res.status(500).send('Internal Server Error');
         });
-        // res.download(videoPath);
+    
+        // Pipe the throttled stream to the response
+        throttledStream.pipe(res);
     }
+
+    
 }
 
 module.exports = VideoController;
