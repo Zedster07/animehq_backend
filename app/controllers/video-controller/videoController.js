@@ -25,7 +25,7 @@ class VideoController {
         var parts = pp.split('/');
         var filename = parts[parts.length - 1];
 	    const range = req.headers.range;
-        if (!range) {
+        if (false) {
             res.status(400).send("UNAUTHORIZED");
         } else {
             const videoPath = path.join(config.serverPath, pp);
