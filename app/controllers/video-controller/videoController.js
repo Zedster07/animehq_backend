@@ -20,11 +20,8 @@ class VideoController {
         let { dcpath } = req.params;
 
         let tmp = dcpath.split('.');
-
         dcpath = tmp[0];
-        console.log(dcpath);
-        const pp = customDecrypt(dcpath);
-        console.log(pp);    
+        const pp = customDecrypt(dcpath);   
         var parts = pp.split('/');
         var filename = parts[parts.length - 1];
 	    const range = req.headers.range;
@@ -68,16 +65,18 @@ class VideoController {
         let tmp = dcpath.split('.');
     
         dcpath = tmp[0];
-        console.log(dcpath);
         const pp = customDecrypt(dcpath);
-        console.log(pp);
         var parts = pp.split('/');
         var filename = parts[parts.length - 1];
     
         const videoPath = path.join(config.serverPath, pp);
     
+        const fileStats = fs.statSync(videoPath);
+        const fileSize = fileStats.size;
+        
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Length', fileSize.toString()); 
         
         // Create a throttled stream with the specified speed limit (50 Mbps)
         const throttledStream = VideoController.createThrottledStream(videoPath, 40);
