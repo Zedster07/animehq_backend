@@ -93,19 +93,22 @@ class VideoController {
             res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
             res.setHeader('Content-Type', 'application/octet-stream');
             res.setHeader('Content-Length', fileSize.toString());
+            res.download(videoPath);
+            const videoStream = fs.createReadStream(videoPath, { start, end });
+            videoStream.pipe(res);
         }
         
-        // Create a throttled stream with the specified speed limit (50 Mbps)
-        const throttledStream = VideoController.createThrottledStream(videoPath, 40);
+        // // Create a throttled stream with the specified speed limit (50 Mbps)
+        // const throttledStream = VideoController.createThrottledStream(videoPath, 40);
     
-        // Handle errors if necessary
-        throttledStream.on('error', (err) => {
-            console.error(err);
-            res.status(500).send('Internal Server Error');
-        });
+        // // Handle errors if necessary
+        // throttledStream.on('error', (err) => {
+        //     console.error(err);
+        //     res.status(500).send('Internal Server Error');
+        // });
     
-        // Pipe the throttled stream to the response
-        throttledStream.pipe(res);
+        // // Pipe the throttled stream to the response
+        // throttledStream.pipe(res);
     }
 
     
