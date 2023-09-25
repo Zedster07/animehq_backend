@@ -74,23 +74,24 @@ class VideoController {
         const fileStats = fs.statSync(videoPath);
         const fileSize = fileStats.size;
         
-        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
-        res.setHeader('Content-Type', 'application/octet-stream');
-        const rangeHeader = req.headers.range;
-        if (rangeHeader) {
-            const ranges = rangeHeader.match(/bytes=([0-9]+)-([0-9]+)?/);
-            if (ranges) {
-                const start = parseInt(ranges[1], 10);
-                const end = ranges[2] ? parseInt(ranges[2], 10) : fileSize - 1;
-
-                // Calculate the content length and set the appropriate headers
-                const contentLength = end - start + 1;
-                res.status(206);
-                res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
-                res.setHeader('Content-Length', contentLength.toString());
-            }
+        
+        const range = req.headers.range;
+        if (range) {
+            const videoSize = fs.statSync(videoPath).size;
+            const CHUNK_SIZE = 10 ** 6;
+            const start = range ? Number(range.replace(/\D/g, "")) : 0;
+            const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+            const contentLength = end - start + 1;
+            const headers = {
+                "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                "Accept-Ranges": "bytes",
+                "Content-Length": contentLength,
+                "Content-Type": "video/mp4",
+            };
+            res.writeHead(206, headers);
         } else {
-            // No range requested, serve the entire file
+            res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+            res.setHeader('Content-Type', 'application/octet-stream');
             res.setHeader('Content-Length', fileSize.toString());
         }
         
