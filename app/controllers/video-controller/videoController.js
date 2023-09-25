@@ -79,24 +79,20 @@ class VideoController {
         if (range) {
             const videoSize = fs.statSync(videoPath).size;
             const CHUNK_SIZE = 10 ** 6;
-            const ranges = rangeHeader.match(/bytes=([0-9]+)-([0-9]+)?/);
-            if(ranges) {
-                 const start = parseInt(ranges[1], 10);
-                const end = ranges[2] ? parseInt(ranges[2], 10) : fileSize - 1;
-                 const contentLength = end - start + 1;
-                const headers = {
-                    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-                    "Accept-Ranges": "bytes",
-                    "Content-Length": contentLength,
-                    "Content-Type": "video/mp4",
-                };
-                res.writeHead(206, headers);
-                const videoStream = fs.createReadStream(videoPath, { start, end });
-                videoStream.pipe(res);
-            }
-            // const start = range ? Number(range.replace(/\D/g, "")) : 0;
-            // const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-           
+            const start = range ? Number(range.replace(/\D/g, "")) : 0;
+            const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+            const contentLength = end - start + 1;
+            const headers = {
+                "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                "Accept-Ranges": "bytes",
+                "Content-Length": contentLength,
+                "Content-Type": "video/mp4",
+            };
+
+            res.writeHead(206, headers);
+
+            const videoStream = fs.createReadStream(videoPath, { start, end });
+            videoStream.pipe(res);
         } else {
             res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
             res.setHeader('Content-Type', 'application/octet-stream');
