@@ -89,13 +89,14 @@ class VideoController {
                 "Content-Type": "video/mp4",
             };
             res.writeHead(206, headers);
+            const videoStream = fs.createReadStream(videoPath, { start, end });
+            videoStream.pipe(res);
         } else {
             res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
             res.setHeader('Content-Type', 'application/octet-stream');
             res.setHeader('Content-Length', fileSize.toString());
             res.download(videoPath);
-            const videoStream = fs.createReadStream(videoPath, { start, end });
-            videoStream.pipe(res);
+            
         }
         
         // // Create a throttled stream with the specified speed limit (50 Mbps)
