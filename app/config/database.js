@@ -53,8 +53,12 @@ const Coupon = require('../models/coupon-models/coupon')(sequelize, DataTypes);
 Coupon.belongsToMany(Payment, { through: 'CouponUses' });
 Payment.belongsToMany(Coupon, { through: 'CouponUses' });
 
+
+const Message = require('../models/cms-models/message')(sequelize, DataTypes);
+
 module.exports = { 
   sequelize , 
+  Message,
   User , 
   Role , 
   hasRole, 
