@@ -9,7 +9,7 @@ const PaymentController = require('../../controllers/payment-controllers/payment
 const router = express.Router();
 router.use(config.routes.payment.prefix , router);
 
-module.exports = router;
+
 
 
 
@@ -24,3 +24,6 @@ router.post('/deletePayment', authMiddleware , isAdmin, validationMiddleware , P
 router.post('/getPayment', authMiddleware , validationMiddleware , PaymentController.getPayment);
 router.get('/user', authMiddleware , validationMiddleware , PaymentController.getUserPayments);
 router.get('/', authMiddleware , isAdmin, validationMiddleware , PaymentController.getPayments);
+
+
+module.exports = router;

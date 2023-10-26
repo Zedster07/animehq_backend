@@ -13,7 +13,7 @@ const metaRoutes = require('./routes/auth-routes/metaRoutes');
 // video stream and download routes
 const videoRoutes = require('./routes/video-routes/videoRoutes');
 
-
+const cmsRoutes = require('./routes/cms-routes/cmsRoutes');
 
 /////////////////////////////
 
@@ -114,6 +114,7 @@ app.use(metaRoutes);
 
 app.use(videoRoutes);
 
+app.use(cmsRoutes);
 
 const port = config.port || 3000;
 

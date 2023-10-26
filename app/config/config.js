@@ -47,6 +47,12 @@ module.exports = {
             database: 'animehq_express',
             host: 'localhost', 
         },
+        // local: {
+        //     username: 'root',
+        //     password: '',
+        //     database: 'animehq_express',
+        //     host: 'localhost', 
+        // },
         docker: {
             username: 'root',
             password: 'Biskra@07',
@@ -72,6 +78,9 @@ module.exports = {
         }, 
         coupon:{
             prefix: '/api/coupon'
+        },
+        cms:{
+            prefix: '/api/cms'
         }
     }
 };

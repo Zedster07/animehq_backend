@@ -8,17 +8,28 @@ class CmsService {
 
     static async updateMessage(data) {
         const {payload, id} = data;
-        return await Message.update({payload},{where:{id}})
+        return await Message.update({...payload},{where:{id}});
     }
 
     static async getMessage(data) {
 
         const { msg_type,msg_sender,msg_receiver,filter } = data;
         /*
-            0 => normal message
-            1 => report 
-            2 => request
-            3 => contact us
+            MSG_TYPE:
+                0 => normal message
+                1 => report 
+                    STATUS:
+                        0 => waiting
+                        1 => done
+                2 => request
+                    STATUS:
+                        0 => waiting
+                        1 => review
+                        2 => working
+                        3 => done
+                        4 => reject
+                3 => contact us
+
         */
         let reqWhere = {};
         reqWhere['msg_type'] = msg_type;

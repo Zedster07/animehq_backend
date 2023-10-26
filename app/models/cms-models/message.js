@@ -1,7 +1,7 @@
 
 module.exports = (sequelize, DataTypes) => {
     const Message = sequelize.define('Message', {
-        
+
       msg_receiver: {
           type: DataTypes.INTEGER,
           allowNull: false,
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
       msg_subject: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
       },
 
       msg_content: {
@@ -36,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       msg_status: {
           type: DataTypes.INTEGER,
           allowNull: false,
-
       },
 
       msg_seen: {
