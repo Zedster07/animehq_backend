@@ -1,5 +1,5 @@
 
-const { Message } = require('../../config/database');
+const {sequelize , Message } = require('../../config/database');
 class CmsService { 
     
     static async addMessage(data) {
@@ -14,7 +14,7 @@ class CmsService {
     static async getMessage(data) {
 
         const { msg_type, msg_sender, msg_receiver, filter } = data;
-        
+
         /*
             MSG_TYPE:
                 0 => normal message
@@ -33,35 +33,40 @@ class CmsService {
 
         */
 
-        let reqWhere = {};
-        reqWhere['msg_type'] = msg_type;
+        // let reqWhere = {};
+        // reqWhere['msg_type'] = msg_type;
 
-        switch (msg_type) {
-            case 0:
-                reqWhere['msg_receiver'] = msg_receiver;
-                reqWhere['msg_sender'] = msg_sender;
-                break;
-            case 1:
-                if(filter!='all') {
-                    reqWhere['msg_sender'] = msg_sender;
-                }
-                break;
-            case 2:
-                if(filter!='all') {
-                    reqWhere['msg_sender'] = msg_sender;
-                }
-                break;
-            case 3:
-                if(filter!='all') {
-                    reqWhere['msg_sender'] = msg_sender;
-                }
-                break;
+        // switch (msg_type) {
+        //     case 0:
+        //         reqWhere['msg_receiver'] = msg_receiver;
+        //         reqWhere['msg_sender'] = msg_sender;
+        //         break;
+        //     case 1:
+        //         if(filter!='all') {
+        //             reqWhere['msg_sender'] = msg_sender;
+        //         }
+        //         break;
+        //     case 2:
+        //         if(filter!='all') {
+        //             reqWhere['msg_sender'] = msg_sender;
+        //         }
+        //         break;
+        //     case 3:
+        //         if(filter!='all') {
+        //             reqWhere['msg_sender'] = msg_sender;
+        //         }
+        //         break;
 
-            default:
-                break;
-        }
+        //     default:
+        //         break;
+        // }
 
-        return await Message.findAll({where:reqWhere});
+
+        const [results, metadata] = await sequelize.query(
+            `SELECT * from messages where msg_type = ${msg_type} and ( (msg_sender=${msg_sender} and msg_receiver=${msg_receiver}) OR (msg_sender=${msg_receiver} and msg_receiver=${msg_sender}))`,
+        );
+
+        return results;
     }
 
 }
