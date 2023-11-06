@@ -13,7 +13,8 @@ class CmsService {
 
     static async getMessage(data) {
 
-        const { msg_type,msg_sender,msg_receiver,filter } = data;
+        const { msg_type, msg_sender, msg_receiver, filter } = data;
+        
         /*
             MSG_TYPE:
                 0 => normal message
@@ -31,6 +32,7 @@ class CmsService {
                 3 => contact us
 
         */
+
         let reqWhere = {};
         reqWhere['msg_type'] = msg_type;
 

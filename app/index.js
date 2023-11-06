@@ -51,10 +51,9 @@ const { initial_data } = require('./utils');
 
 
 const cors = require("cors");
-let corsOptions = {
-  origin: ["*"],
-};
-app.use(cors(corsOptions));
+app.use(cors());
+
+app.options('*', cors());
 
 const operation = retry.operation({
   retries: 5, // Number of retry attempts
