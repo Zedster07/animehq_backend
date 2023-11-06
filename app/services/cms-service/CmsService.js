@@ -63,7 +63,7 @@ class CmsService {
 
 
         const [results, metadata] = await sequelize.query(
-            `SELECT * from messages where msg_type = ${msg_type} and ( (msg_sender=${msg_sender} and msg_receiver=${msg_receiver}) OR (msg_sender=${msg_receiver} and msg_receiver=${msg_sender}))`,
+            `SELECT * from Messages where msg_type = ${msg_type} and ( (msg_sender=${msg_sender} and msg_receiver=${msg_receiver}) OR (msg_sender=${msg_receiver} and msg_receiver=${msg_sender}))`,
         );
 
         return results;
