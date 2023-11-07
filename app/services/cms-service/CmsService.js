@@ -7,7 +7,7 @@ class CmsService {
 
         const { foru } = data;
         const [results, metadata] = await sequelize.query(
-            `SELECT count(*) from Messages where msg_receiver = ${foru} and msg_seen=0`,
+            `SELECT count(*) as ccuns from Messages where msg_receiver = ${foru} and msg_seen=0`,
         );
 
         return results;
