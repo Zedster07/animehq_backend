@@ -6,7 +6,7 @@ class CmsService {
     static async getUnseenCount(data) {
 
         const { foru, type } = data;
-        let results;
+        let results,metadata;
         if(type == 99) {
             [results, metadata] = await sequelize.query(
                 `SELECT count(*) as ccuns from Messages where msg_receiver = ${foru} and msg_seen=0`,
@@ -19,6 +19,7 @@ class CmsService {
 
 
         return results;
+
     }
 
 
