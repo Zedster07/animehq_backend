@@ -60,7 +60,6 @@ module.exports = {
             host: 'db', 
         }
     },
-    
     routes: {
         user:{
             prefix: '/api/users'

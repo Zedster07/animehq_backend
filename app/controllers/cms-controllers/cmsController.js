@@ -1,6 +1,20 @@
 const CmsService = require("../../services/cms-service/CmsService");
 
 class CmsController {
+
+
+
+    static async getUnseen(req,res) {
+        try {
+            const {data} = req.body;
+            const result = await CmsService.getUnseenCount(data);
+            res.status(200).json(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('Something went wrong');
+        }
+    }
+
     static async addMessage(req, res) {
         try {
             const {data} = req.body;

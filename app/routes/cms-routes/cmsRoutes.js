@@ -16,5 +16,7 @@ router.post('/updateMessages' , validationMiddleware , CmsController.updateMessa
 
 router.post('/getMessages' , validationMiddleware , CmsController.getMessage);
 
+router.post('/getUnseen' , validationMiddleware , CmsController.getUnseen);
+
 module.exports = router;
 

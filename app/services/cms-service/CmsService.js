@@ -2,6 +2,18 @@
 const {sequelize , Message } = require('../../config/database');
 class CmsService { 
     
+
+    static async getUnseenCount(data) {
+
+        const { foru } = data;
+        const [results, metadata] = await sequelize.query(
+            `SELECT count(*) from Messages where msg_receiver = ${foru} and msg_seen=0`,
+        );
+
+        return results;
+    }
+
+
     static async addMessage(data) {
         return await Message.create(data);
     }
