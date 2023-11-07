@@ -5,10 +5,18 @@ class CmsService {
 
     static async getUnseenCount(data) {
 
-        const { foru } = data;
-        const [results, metadata] = await sequelize.query(
-            `SELECT count(*) as ccuns from Messages where msg_receiver = ${foru} and msg_seen=0`,
-        );
+        const { foru, type } = data;
+        let results;
+        if(type == 99) {
+            [results, metadata] = await sequelize.query(
+                `SELECT count(*) as ccuns from Messages where msg_receiver = ${foru} and msg_seen=0`,
+            );
+        } else {
+            [results, metadata] = await sequelize.query(
+                `SELECT count(*) as ccuns from Messages where msg_receiver = ${foru} and msg_seen=0 and msg_type=${type}`,
+            );
+        }
+
 
         return results;
     }
