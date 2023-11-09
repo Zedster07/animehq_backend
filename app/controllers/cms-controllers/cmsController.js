@@ -15,6 +15,16 @@ class CmsController {
         }
     }
 
+    static async getSenders(req,res) {
+        try {
+            const result = await CmsService.getSenders();
+            res.status(200).json(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('Something went wrong');
+        }
+    }
+
     static async addMessage(req, res) {
         try {
             const {data} = req.body;
