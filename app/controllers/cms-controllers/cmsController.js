@@ -17,7 +17,8 @@ class CmsController {
 
     static async getSenders(req,res) {
         try {
-            const result = await CmsService.getSenders();
+            const {type} = req.body;
+            const result = await CmsService.getSenders(type);
             res.status(200).json(result);
         } catch (error) {
             console.log(error);

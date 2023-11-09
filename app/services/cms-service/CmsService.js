@@ -4,9 +4,9 @@ class CmsService {
     
 
 
-    static async getSenders() {
+    static async getSenders(type) {
         const [results, metadata] = await sequelize.query(
-            `SELECT msg_sender , count(*) as cmsgs from Messages where msg_receiver = 0 and msg_seen=0 GROUP BY msg_sender ORDER BY updatedAt`,
+            `SELECT msg_sender , count(*) as cmsgs from Messages where msg_type=${type} msg_receiver = 0 and msg_seen=0 GROUP BY msg_sender ORDER BY updatedAt`,
         );
 
         return results;
