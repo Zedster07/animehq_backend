@@ -54,6 +54,7 @@ class CmsController {
             const result = await CmsService.updateMessage(data);
             res.status(200).json(result);
         } catch (error) {
+            console.log(error);
             res.status(500).json('Something went wrong');
         }
     }
