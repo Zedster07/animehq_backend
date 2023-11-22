@@ -37,8 +37,8 @@ class CmsService {
     }
 
     static async updateMessage(data) {
-        const {payload, id} = data;
-        return await Message.update({...payload},{where:{id}});
+        const {payload, wc} = data;
+        return await Message.update({...payload},{...wc});
     }
 
     static async getMessage(data) {
