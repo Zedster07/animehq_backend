@@ -130,8 +130,8 @@ const port = config.port || 3000;
 const runServer = () => {
   try{
     const options = {
-      key: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com-0001/privkey.pem'), // Path to the private key file
-      cert: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com-0001/cert.pem'), // Path to the certificate file
+      key: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com/privkey.pem'), // Path to the private key file
+      cert: fs.readFileSync('/etc/letsencrypt/live/download.animhq.com/fullchain.pem'), // Path to the certificate file
     };
     const server = https.createServer(options, app);
     if(server) {
