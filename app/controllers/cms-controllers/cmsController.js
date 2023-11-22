@@ -51,6 +51,7 @@ class CmsController {
     static async updateMessage(req,res) {
         try {
             const {data} = req.body;
+            console.log(data);
             const result = await CmsService.updateMessage(data);
             res.status(200).json(result);
         } catch (error) {
