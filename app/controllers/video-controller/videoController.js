@@ -58,7 +58,7 @@ class VideoController {
         
         readStream.pipe(throttleStream);
         
-        return throttleStream;
+        return readStream;
     }
 
     // static async downloadFile(req, res) {
@@ -148,7 +148,7 @@ class VideoController {
                 res.writeHead(206, headers);
 
                 // Create a throttled stream with the specified speed limit (40 Mbps)
-                const throttledStream = VideoController.createThrottledStream(videoPath, 40);
+                const throttledStream = VideoController.createThrottledStream(videoPath, 10);
 
                 // Handle errors if necessary
                 throttledStream.on('error', (err) => {
@@ -167,7 +167,7 @@ class VideoController {
             res.setHeader('Content-Length', fileSize.toString());
 
             // Create a throttled stream with the specified speed limit (40 Mbps)
-            const throttledStream = VideoController.createThrottledStream(videoPath, 40);
+            const throttledStream = VideoController.createThrottledStream(videoPath, 10);
 
             // Handle errors if necessary
             throttledStream.on('error', (err) => {
