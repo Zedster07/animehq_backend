@@ -58,7 +58,7 @@ class VideoController {
         
         readStream.pipe(throttleStream);
         
-        return readStream;
+        return throttleStream;
     }
 
     // static async downloadFile(req, res) {
