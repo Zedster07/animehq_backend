@@ -131,6 +131,9 @@ class VideoController {
         console.log(videoPath);
         const range = req.headers.range;
         const readStream = fs.createReadStream(videoPath);
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Length', fileSize.toString());
         readStream.pipe(new Throttle({rate: 1024*1024*30})).pipe(res);
         
         // if (range) {
