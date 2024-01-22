@@ -128,9 +128,10 @@ class VideoController {
 
         const fileStats = fs.statSync(videoPath);
         const fileSize = fileStats.size;
-
+        console.log(videoPath);
         const range = req.headers.range;
         if (range) {
+            console.log("there is range");
             const videoSize = fs.statSync(videoPath).size;
             const CHUNK_SIZE = 10 ** 6;
             const start = range ? Number(range.replace(/\D/g, "")) : 0;
@@ -162,6 +163,7 @@ class VideoController {
                 res.status(416).send('Requested Range Not Satisfiable'); // 416 Range Not Satisfiable
             }
         } else {
+            console.log("NO RANGE");
             res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
             res.setHeader('Content-Type', 'application/octet-stream');
             res.setHeader('Content-Length', fileSize.toString());
