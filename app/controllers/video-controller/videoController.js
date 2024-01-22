@@ -117,7 +117,7 @@ class VideoController {
     // }
 
 
-    static async downloadFile(req, res) {
+     static async downloadFile(req, res) {
         let { dcpath } = req.params;
         let tmp = dcpath.split('.');
         dcpath = tmp[0];
@@ -136,33 +136,38 @@ class VideoController {
             const start = range ? Number(range.replace(/\D/g, "")) : 0;
             const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
             const contentLength = end - start + 1;
-            const headers = {
-                "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-                "Accept-Ranges": "bytes",
-                "Content-Length": contentLength,
-                "Content-Type": "video/mp4",
-            };
 
-            res.writeHead(206, headers);
+            if (start >= 0 && start <= videoSize - 1) { // Check if start is within valid range
+                const headers = {
+                    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": contentLength,
+                    "Content-Type": "video/mp4",
+                };
 
-            // Create a throttled stream with the specified speed limit (40 Mbps)
-            const throttledStream = VideoController.createThrottledStream(videoPath, 30);
+                res.writeHead(206, headers);
 
-            // Handle errors if necessary
-            throttledStream.on('error', (err) => {
-                console.error(err);
-                res.status(500).send('Internal Server Error');
-            });
+                // Create a throttled stream with the specified speed limit (40 Mbps)
+                const throttledStream = VideoController.createThrottledStream(videoPath, 40);
 
-            // Pipe the throttled stream with the specified range to the response
-            throttledStream.pipe(res, { start, end });
+                // Handle errors if necessary
+                throttledStream.on('error', (err) => {
+                    console.error(err);
+                    res.status(500).send('Internal Server Error');
+                });
+
+                // Pipe the throttled stream with the specified range to the response
+                throttledStream.pipe(res, { start, end });
+            } else {
+                res.status(416).send('Requested Range Not Satisfiable'); // 416 Range Not Satisfiable
+            }
         } else {
             res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
             res.setHeader('Content-Type', 'application/octet-stream');
             res.setHeader('Content-Length', fileSize.toString());
 
             // Create a throttled stream with the specified speed limit (40 Mbps)
-            const throttledStream = VideoController.createThrottledStream(videoPath, 30);
+            const throttledStream = VideoController.createThrottledStream(videoPath, 40);
 
             // Handle errors if necessary
             throttledStream.on('error', (err) => {
