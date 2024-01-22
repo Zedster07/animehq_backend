@@ -131,7 +131,7 @@ class VideoController {
         console.log(videoPath);
         const range = req.headers.range;
         const readStream = fs.createReadStream(videoPath);
-        readStream.pipe(new Throttle({rate: 10})).pipe(res);
+        readStream.pipe(new Throttle({rate: 1024*1024*30})).pipe(res);
         
         // if (range) {
         //     console.log("there is range");
