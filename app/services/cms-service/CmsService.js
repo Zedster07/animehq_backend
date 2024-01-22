@@ -1,8 +1,7 @@
 
 const {sequelize , Message } = require('../../config/database');
-class CmsService { 
-    
 
+class CmsService { 
 
     static async getSenders(type) {
         const [results, metadata] = await sequelize.query(
@@ -31,7 +30,6 @@ class CmsService {
 
     }
 
-
     static async addMessage(data) {
         return await Message.create(data);
     }
@@ -43,7 +41,7 @@ class CmsService {
 
     static async getMessage(data) {
 
-        const { msg_type, msg_sender, msg_receiver, filter } = data;
+        const { msg_type , msg_sender, msg_receiver , filter } = data;
 
         /*
             MSG_TYPE:
@@ -60,7 +58,6 @@ class CmsService {
                         3 => done
                         4 => reject
                 3 => contact us
-
         */
 
         // let reqWhere = {};
@@ -91,12 +88,15 @@ class CmsService {
         //         break;
         // }
 
-
         const [results, metadata] = await sequelize.query(
             `SELECT * from Messages where msg_type = ${msg_type} and ( (msg_sender=${msg_sender} and msg_receiver=${msg_receiver}) OR (msg_sender=${msg_receiver} and msg_receiver=${msg_sender}))`,
         );
 
         return results;
+    }
+
+    static async deleteMessage(id) {
+        return await Message.destroy({where:{}});
     }
 
 }
