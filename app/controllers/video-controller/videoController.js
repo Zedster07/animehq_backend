@@ -64,13 +64,14 @@ class VideoController {
      static async downloadFile(req, res) {
 
         let { dcpath } = req.params;
-        let tmp = dcpath.split('.');
+         var addition = dcpath.split('-@-');
+        let tmp = addition[0].split('.');
         dcpath = tmp[0];
         const pp = customDecrypt(dcpath);
-        var addition = pp.split('-@-');
-        var parts = addition[0].split('/');
+       
+        var parts = pp.split('/');
         var filename = parts[parts.length - 1];
-        const videoPath = path.join(config.serverPath, addition[0]);
+        const videoPath = path.join(config.serverPath, pp);
 
         const fileStats = fs.statSync(videoPath);
         const fileSize = fileStats.size;
@@ -82,7 +83,7 @@ class VideoController {
         res.setHeader('Content-Length', fileSize.toString());
         const readStream = fs.createReadStream(videoPath);
         let speed = 10;
-        if(addition[1] == 'free') {
+        if(addition[1] == '+') {
             speed = 1;
         }
         readStream.pipe(new Throttle({rate: 1024*1024*speed})).pipe(res);
