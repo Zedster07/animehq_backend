@@ -37,7 +37,7 @@ module.exports = {
     vemailSecret: 'b843e14d901e6ab7a789e2c8a7f3a605c47f903f3f4d3e5f0e2c65a5e4f7b9c3',
     resetPassSecret: 'b843e14d901e6ab7a789e2c8a7f3a605c47f903f3f4d3e5f0e2c65a5e4f7b9c4',
     
-    port: 3100, // 3100 test , 3000 prod
+    port: 3000, // 3100 test , 3000 prod
     env: 'dev', // dev or prod 
     hosting: 'local', // local or docker
     db_setups: {
