@@ -108,4 +108,4 @@ function customDecrypt(encryptedLink) {
 }
 
 
-module.exports = {getDevice,validateInput ,getExpirationDate  , initial_data , customDecrypt};
+module.exports = { getDevice , validateInput , getExpirationDate  , initial_data , customDecrypt };
