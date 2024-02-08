@@ -64,7 +64,8 @@ class VideoController {
      static async downloadFile(req, res) {
 
         let { dcpath } = req.params;
-         var addition = dcpath.split('-@-');
+        var addition = dcpath.split('-@-');
+        console.log(addition);
         let tmp = addition[0].split('.');
         dcpath = tmp[0];
         const pp = customDecrypt(dcpath);
