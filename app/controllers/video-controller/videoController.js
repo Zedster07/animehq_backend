@@ -55,9 +55,7 @@ class VideoController {
     static createThrottledStream(filePath, speedLimitMbps) {
         const readStream = fs.createReadStream(filePath);
         const throttleStream = new Throttle({ rate: speedLimitMbps * 1024 * 1024 }); // Convert speed limit to bytes per second
-        
         readStream.pipe(throttleStream);
-        
         return throttleStream;
     }
 
@@ -85,10 +83,11 @@ class VideoController {
         const readStream = fs.createReadStream(videoPath);
         let speed = 10;
         if(addition[1] == '+') {
-            speed = 1;
+            // speed = 0;
+            res.status(401);
+        } else {
+            readStream.pipe(new Throttle({rate: 1024*1024*speed})).pipe(res);
         }
-        readStream.pipe(new Throttle({rate: 1024*1024*speed})).pipe(res);
-
     }
 }
 
